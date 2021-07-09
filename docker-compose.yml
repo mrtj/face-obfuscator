@@ -1,7 +1,7 @@
-version: '0.1'
+version: '2.3'
 
 services:
-  face_recognition:
+  face_obfuscator:
     image: face_obfuscator
     container_name: face_obfuscator
     working_dir: /opt/face_obfuscator

@@ -32,6 +32,8 @@ RUN cd /opt && \
     cd dlib/ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
+RUN pip3 install opencv-python==4.5.*
+
 # The rest of this file just runs an example script.
 
 # If you wanted to use this Dockerfile to run your own app instead, maybe you would do this:
