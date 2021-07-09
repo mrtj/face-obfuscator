@@ -1,16 +1,16 @@
-version: '2.3'
+version: '0.1'
 
 services:
   face_recognition:
-    image: face_recognition
-    container_name: face_recognition
-    working_dir: /opt/face_recognition/examples
+    image: face_obfuscator
+    container_name: face_obfuscator
+    working_dir: /opt/face_obfuscator
     build:
       context: .
       #Uncomment this line to run the example on the GPU (requires Nvidia-Docker)
       # dockerfile: Dockerfile.gpu 
-    command: python3 -u find_faces_in_picture_cnn.py
+    command: python3 face_obfuscator.py
     volumes:
-      - ./:/face_recognition
+      - ./:/workspace
     #Uncomment this line to run the example on the GPU (requires Nvidia-Docker)
     # runtime: nvidia

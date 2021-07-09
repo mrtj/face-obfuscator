@@ -47,5 +47,7 @@ RUN cd /opt/face_recognition && \
     pip3 install -r requirements.txt && \
     python3 setup.py install
 
-CMD cd /opt/face_recognition/examples && \
-    python3 recognize_faces_in_pictures.py
+COPY . /opt/face_obfuscator
+
+CMD cd /opt/face_obfuscator && \
+    python3 face_obfuscator.py
