@@ -21,7 +21,7 @@ $ git clone https://github.com/mrtj/face-obfuscator.git
 $ cd face-obfuscator
 $ cp path/to/my_input_video.mp4 input/my_input_video.mp4
 ```
-2. Run the application with `docker-compose`:
+2. Run the application with `docker-compose`. The first time you execute this command, docker will build the application image. This can take some time. Successive executions will be faster.
 ```bash
 $ docker-compose up --build
 ```

@@ -14,8 +14,11 @@ def main():
     input_basenames = [f for f in os.listdir(INPUT_FOLDER) 
                     if os.path.isfile(os.path.join(INPUT_FOLDER, f)) and
                     not f.startswith('.')]
+
+    output_basenames = [os.path.splitext(f)[0] + '.mp4' for f in input_basenames]
+
     input_filenames = [os.path.join(INPUT_FOLDER, f) for f in input_basenames]
-    output_filenames = [os.path.join(OUTPUT_FOLDER, f) for f in input_basenames]
+    output_filenames = [os.path.join(OUTPUT_FOLDER, f) for f in output_basenames]
     for (input_filename, output_filename) in zip(input_filenames, output_filenames):
         print('input filename:', input_filename)
         print('output filename:', output_filename)
@@ -61,12 +64,12 @@ def process_video(input_filename, output_filename):
         _, frame = cap.read()
         if frame is None:
             break
+        frame_idx += 1
         frame, face_locations = process_frame(frame)
         out.write(frame)
         print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
               f'face count: {len(face_locations)}')
-        frame_idx += 1
-
+        
     cap.release()
     out.release()
 
