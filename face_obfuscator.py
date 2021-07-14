@@ -36,9 +36,6 @@ def process_frame(frame):
     # Find all the faces and face encodings in the current frame of video
     face_locations = face_recognition.face_locations(small_frame, model='cnn')
 
-    if face_locations:
-        print('found faces')
-
     # Display the results
     for top, right, bottom, left in face_locations:
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
@@ -56,17 +53,17 @@ def process_frame(frame):
         # Put the blurred face region back into the frame image
         frame[top:bottom, left:right] = face_image
     
-    return frame
+    return frame, face_locations
 
-frame_count = 0
+frame_idx = 0
 while True:
     ret, frame = cap.read()
     if frame is None:
         break
-    frame = process_frame(frame)
+    frame, face_locations = process_frame(frame)
     out.write(frame)
-    print(frame_count)
-    frame_count += 1
+    print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), face count: {len(face_locations)}')
+    frame_idx += 1
 
 cap.release()
 out.release()
