@@ -1,11 +1,28 @@
+import os
+
 import face_recognition
 import cv2
 
 print('face_recognition: v{}'.format(face_recognition.__version__))
 print('opencv: v{}'.format(cv2.__version__))
 
-input_filename = '/opt/face_recognition/examples/short_hamilton_clip.mp4'
-output_filename = '/workspace/short_hamilton_clip_blur.mp4'
+INPUT_FOLDER = '/input'
+OUTPUT_FOLDER = '/output'
+
+def main():
+
+    input_basenames = [f for f in os.listdir(INPUT_FOLDER) 
+                    if os.path.isfile(os.path.join(INPUT_FOLDER, f)) and
+                    not f.startswith('.')]
+    input_filenames = [os.path.join(INPUT_FOLDER, f) for f in input_basenames]
+    output_filenames = [os.path.join(OUTPUT_FOLDER, f) for f in input_basenames]
+    for (input_filename, output_filename) in zip(input_filenames, output_filenames):
+        print('input filename:', input_filename)
+        print('output filename:', output_filename)
+        try:
+            process_video(input_filename, output_filename)
+        except FileNotFoundError:
+            print(f'[WARNING] skipping {input_filename} (could not open as a video file)')
 
 def get_video_info(cap):
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -14,56 +31,44 @@ def get_video_info(cap):
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     return width, height, fps, frame_count
 
-cap = cv2.VideoCapture(input_filename)
-if not cap.isOpened():
-    raise FileNotFoundError(f'Could not open {input_filename}')
-
-print(f'opened {input_filename}')
-
-width, height, fps, frame_count = get_video_info(cap)
-print(f' - resolution: {width} x {height}')
-print(f' - fps: {fps}')
-print(f' - frame_count: {frame_count}')
-
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-
-out = cv2.VideoWriter(output_filename, fourcc, fps, (width, height))
-
 def process_frame(frame):
-    # small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
     small_frame = frame
-
-    # Find all the faces and face encodings in the current frame of video
     face_locations = face_recognition.face_locations(small_frame, model='cnn')
-
-    # Display the results
     for top, right, bottom, left in face_locations:
-        # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-        # top *= 4
-        # right *= 4
-        # bottom *= 4
-        # left *= 4
-
-        # Extract the region of the image that contains the face
         face_image = frame[top:bottom, left:right]
-
-        # Blur the face image
         face_image = cv2.GaussianBlur(face_image, (99, 99), 30)
-
-        # Put the blurred face region back into the frame image
-        frame[top:bottom, left:right] = face_image
-    
+        frame[top:bottom, left:right] = face_image    
     return frame, face_locations
 
-frame_idx = 0
-while True:
-    ret, frame = cap.read()
-    if frame is None:
-        break
-    frame, face_locations = process_frame(frame)
-    out.write(frame)
-    print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), face count: {len(face_locations)}')
-    frame_idx += 1
+def process_video(input_filename, output_filename):
+    cap = cv2.VideoCapture(input_filename)
+    if not cap.isOpened():
+        raise FileNotFoundError(f'Could not open {input_filename}')
 
-cap.release()
-out.release()
+    print(f'opened {input_filename}')
+
+    width, height, fps, frame_count = get_video_info(cap)
+    print(f' - resolution: {width} x {height}')
+    print(f' - fps: {fps}')
+    print(f' - frame_count: {frame_count}')
+
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
+
+    out = cv2.VideoWriter(output_filename, fourcc, fps, (width, height))
+
+    frame_idx = 0
+    while True:
+        _, frame = cap.read()
+        if frame is None:
+            break
+        frame, face_locations = process_frame(frame)
+        out.write(frame)
+        print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
+              f'face count: {len(face_locations)}')
+        frame_idx += 1
+
+    cap.release()
+    out.release()
+
+if __name__ == '__main__':
+    main()

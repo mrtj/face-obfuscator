@@ -6,15 +6,20 @@ Face Obfuscator obfuscates human faces in a video.
 
 ### AWS EC2
 
-1. Create an EC2 instance with Amazon Linux 2 AMI. Accelerated computing instances (with GPU) are supported and significantly accelerate the video processing, but are not required.
+1. Create an EC2 instance with Amazon Linux 2 AMI. GPU is currently not used for inference.
 2. Launch the instance and login to it with ssh.
 3. [Install docker and docker-compose](https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9) on the instance.
 4. Clone this repo on the instance:
 ```bash
 $ git clone https://github.com/mrtj/face-obfuscator.git
 ```
-5. Run the application with `docker-compose`:
+5. Place the input video(s) in the `input` folder:
 ```bash
 $ cd face-obfuscator
+$ cp path/to/my_input_video.mp4 input/my_input_video.mp4
+```
+6. Run the application with `docker-compose`:
+```bash
 $ docker-compose up --build
 ```
+7. The application will try to open each video files in the `input` folder, blur the faces on each frame of the video, and save the blurred video to the `output` folder.
