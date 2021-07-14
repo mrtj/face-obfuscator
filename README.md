@@ -13,13 +13,16 @@ Face Obfuscator obfuscates human faces in a video.
 ```bash
 $ git clone https://github.com/mrtj/face-obfuscator.git
 ```
-5. Place the input video(s) in the `input` folder:
+
+## Running
+
+1. Place the input video(s) in the `input` folder:
 ```bash
 $ cd face-obfuscator
 $ cp path/to/my_input_video.mp4 input/my_input_video.mp4
 ```
-6. Run the application with `docker-compose`:
+2. Run the application with `docker-compose`:
 ```bash
 $ docker-compose up --build
 ```
-7. The application will try to open each video files in the `input` folder, blur the faces on each frame of the video, and save the blurred video to the `output` folder.
+3. The application will try to open each video files in the `input` folder, blur the faces on each frame of the video, and save the blurred video to the `output` folder.
