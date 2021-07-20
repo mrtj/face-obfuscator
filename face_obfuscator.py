@@ -76,6 +76,7 @@ def process_video(input_filename, output_filename):
 
     frame_idx = 0
     fps = FPSMeter()
+    start = time.perf_counter()
     while True:
         _, frame = cap.read()
         if frame is None:
@@ -85,11 +86,13 @@ def process_video(input_filename, output_filename):
         out.write(frame)
         fps.tick(log_format=
             f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
-            f'{{ellapsed:.02f}}s, fps={{fps}}'
+            f'processing time: {{ellapsed:.04f}}s, processing fps: {{fps:.02f}}, '
             f'face count: {len(face_locations)}')
-        print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
-              f'face count: {len(face_locations)}')
-        
+
+    total_time = time.perf_counter() - start
+    print(f'Total processing time: {total_time:.02f}s\n'
+          f'Average processing time per frame: {total_time/frame_idx:.02f}s\n'
+          f'Average processing fps: {frame_idx/total_time:.02f}')
     cap.release()
     out.release()
 
