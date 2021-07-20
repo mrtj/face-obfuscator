@@ -1,13 +1,28 @@
 import os
+import time
 
 import face_recognition
 import cv2
 
 print('face_recognition: v{}'.format(face_recognition.__version__))
 print('opencv: v{}'.format(cv2.__version__))
+print(cv2.getBuildInformation())
 
 INPUT_FOLDER = '/input'
 OUTPUT_FOLDER = '/output'
+
+class FPSMeter:
+
+    def __init__(self):
+        self.last = None
+
+    def tick(self, log_format=None):
+        ts = time.perf_counter()
+        ellapsed = ts - self.last if self.last else None
+        self.last = ts
+        if log_format and ellapsed:
+            print(log_format.format(ellapsed=ellapsed, fps=1/ellapsed))
+        return ellapsed
 
 def main():
 
@@ -60,6 +75,8 @@ def process_video(input_filename, output_filename):
     out = cv2.VideoWriter(output_filename, fourcc, fps, (width, height))
 
     frame_idx = 0
+    fps = FPSMeter()
+    start = time.perf_counter()
     while True:
         _, frame = cap.read()
         if frame is None:
@@ -67,9 +84,15 @@ def process_video(input_filename, output_filename):
         frame_idx += 1
         frame, face_locations = process_frame(frame)
         out.write(frame)
-        print(f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
-              f'face count: {len(face_locations)}')
-        
+        fps.tick(log_format=
+            f'frame {frame_idx}/{frame_count} ({frame_idx/frame_count:.02%}), '
+            f'processing time: {{ellapsed:.04f}}s, processing fps: {{fps:.02f}}, '
+            f'face count: {len(face_locations)}')
+
+    total_time = time.perf_counter() - start
+    print(f'Total processing time: {total_time:.02f}s\n'
+          f'Average processing time per frame: {total_time/frame_idx:.02f}s\n'
+          f'Average processing fps: {frame_idx/total_time:.02f}')
     cap.release()
     out.release()
 
