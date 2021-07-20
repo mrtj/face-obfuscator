@@ -1,0 +1,51 @@
+FROM nvidia/cuda:9.0-cudnn7-devel
+
+RUN apt update -y
+RUN apt install -y \
+    git \
+    cmake \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    python3 \
+    python3-pip
+
+RUN pip3 install scikit-build
+
+# Install compilers
+
+RUN apt install -y software-properties-common
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt update -y; apt install -y gcc-6 g++-6
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 50
+RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 50
+
+#Install dlib 
+
+RUN mkdir -p /opt/dlib && \
+    cd /opt && \
+    git clone -b 'v19.16' --single-branch https://github.com/davisking/dlib.git dlib/
+
+RUN mkdir -p /opt/dlib/build && \
+    cd /opt/dlib && \
+    cmake -H/opt/dlib -B/opt/dlib/build -DDLIB_USE_CUDA=1 -DUSE_AVX_INSTRUCTIONS=1
+
+RUN cmake --build /opt/dlib/build
+
+RUN cd /opt/dlib && \
+    python3 setup.py install
+
+RUN pip3 install opencv-python==4.5.*
+
+RUN cd /opt && \
+    git clone https://github.com/ageitgey/face_recognition.git
+
+RUN cd /opt/face_recognition && \
+    pip3 install -r requirements.txt && \
+    python3 setup.py install
+
+COPY . /opt/face_obfuscator
+
+CMD cd /opt/face_obfuscator && \
+    python3 face_obfuscator.py
