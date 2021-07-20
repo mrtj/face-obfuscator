@@ -45,9 +45,9 @@ RUN cd /opt/dlib && \
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1
 RUN update-alternatives --set python /usr/bin/python3.7
 
-RUN pip3 install opencv-python==4.5.*
-
 RUN apt install -y ffmpeg
+
+RUN pip3 install opencv-python==4.5.*
 
 RUN cd /opt && \
     git clone https://github.com/ageitgey/face_recognition.git
