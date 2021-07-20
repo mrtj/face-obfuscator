@@ -8,8 +8,8 @@ RUN apt-get update -y && apt-get install -y --fix-missing \
     libsm6 \
     libxext6 \
     libxrender-dev \
-    python3.7 \
-    python3.7-dev \
+    python3.6 \
+    python3.6-dev \
     python3-pip \
     build-essential \
     cmake \
@@ -37,14 +37,14 @@ RUN pip3 install scikit-build
 
 # Install compilers
 
-RUN apt install -y software-properties-common
+RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:ubuntu-toolchain-r/test
-RUN apt update -y; apt install -y gcc-6 g++-6
+RUN apt-get update -y; apt-get install -y gcc-6 g++-6
 
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 50
 RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 50
 
-RUN python3.7 -m pip install setuptools==50.3.0
+RUN python3.6 -m pip install setuptools==50.3.0
 
 #Install dlib 
 
@@ -59,10 +59,10 @@ RUN mkdir -p /opt/dlib/build && \
 RUN cmake --build /opt/dlib/build
 
 RUN cd /opt/dlib && \
-    python3.7 setup.py install --no USE_AVX_INSTRUCTIONS
+    python3.6 setup.py install --no USE_AVX_INSTRUCTIONS
 
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1
-RUN update-alternatives --set python /usr/bin/python3.7
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
+RUN update-alternatives --set python /usr/bin/python3.6
 
 # OpenCV
 
