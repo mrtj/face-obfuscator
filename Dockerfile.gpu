@@ -33,8 +33,6 @@ RUN apt-get update -y && apt-get install -y --fix-missing \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
-RUN pip3 install scikit-build
-
 # Install compilers
 
 RUN apt-get install -y software-properties-common
@@ -46,7 +44,7 @@ RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 50
 
 RUN python3.6 -m pip install setuptools==50.3.0
 
-#Install dlib 
+# Install dlib 
 
 RUN mkdir -p /opt/dlib && \
     cd /opt && \
@@ -65,9 +63,7 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
 RUN update-alternatives --set python /usr/bin/python3.6
 
 # OpenCV
-
-RUN apt-get install ffmpeg -y
-RUN pip3 install opencv-python==4.5.*
+RUN pip3 install scikit-build opencv-python==4.5.*
 
 # Application
 
