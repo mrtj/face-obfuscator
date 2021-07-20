@@ -2,8 +2,8 @@ version: '2.3'
 
 services:
   face_obfuscator:
-    image: face_obfuscator
-    container_name: face_obfuscator
+    image: face_obfuscator_gpu
+    container_name: face_obfuscator_gpu
     working_dir: /opt/face_obfuscator
     build:
       context: .
