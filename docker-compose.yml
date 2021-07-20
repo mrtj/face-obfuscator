@@ -7,7 +7,9 @@ services:
     working_dir: /opt/face_obfuscator
     build:
       context: .
+      dockerfile: Dockerfile.gpu
     command: python3 -u face_obfuscator.py
     volumes:
       - ./input:/input
       - ./output:/output
+    runtime: nvidia
