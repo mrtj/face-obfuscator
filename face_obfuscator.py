@@ -5,6 +5,7 @@ import cv2
 
 print('face_recognition: v{}'.format(face_recognition.__version__))
 print('opencv: v{}'.format(cv2.__version__))
+print(cv2.getBuildInformation())
 
 INPUT_FOLDER = '/input'
 OUTPUT_FOLDER = '/output'
