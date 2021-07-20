@@ -46,7 +46,7 @@ RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 50
 
 RUN python3.6 -m pip install setuptools==50.3.0
 
-#Install dlib 
+# Install dlib 
 
 RUN mkdir -p /opt/dlib && \
     cd /opt && \
@@ -67,7 +67,8 @@ RUN update-alternatives --set python /usr/bin/python3.6
 # OpenCV
 
 RUN apt-get install ffmpeg -y
-RUN pip3 install opencv-python==4.5.*
+RUN pip3 install --upgrade setuptools pip
+RUN pip3 install opencv-python-headless
 
 # Application
 
