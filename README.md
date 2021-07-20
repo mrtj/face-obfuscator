@@ -13,7 +13,7 @@ Face Obfuscator obfuscates human faces in a video.
 5. Install [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) on the host OS.
 4. Clone this repo on the instance:
 ```bash
-$ git clone https://github.com/mrtj/face-obfuscator.git
+$ git clone https://github.com/mrtj/face-obfuscator.git && git fetch && git checkout gpu
 ```
 
 ## Running
