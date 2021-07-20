@@ -6,7 +6,7 @@ Face Obfuscator obfuscates human faces in a video.
 
 ### AWS EC2
 
-1. Create an EC2 instance with Amazon Linux 2 AMI. For GPU accelerated version, check out the [gpu branch](/mrtj/face-obfuscator/tree/gpu).
+1. Create an EC2 instance with Amazon Linux 2 AMI. For GPU accelerated version, check out the [gpu branch](//github.com/mrtj/face-obfuscator/tree/gpu).
 2. Launch the instance and login to it with ssh.
 3. [Install docker and docker-compose](https://gist.github.com/npearce/6f3c7826c7499587f00957fee62f8ee9) on the instance.
 4. Clone this repo on the instance:
