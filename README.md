@@ -28,3 +28,17 @@ $ cp path/to/my_input_video.mp4 input/my_input_video.mp4
 $ docker-compose up --build
 ```
 3. The application will try to open each video files in the `input` folder, blur the faces on each frame of the video, and save the blurred video to the `output` folder.
+
+### Skipping frames and reducing resolution
+
+You can choose to process only every *n*<sup>th</sup> frame and to reduce the resolution of the input video. These options can speed up the video processing, but they will result in a lower quality output video. If you reduce the video resolution, the face detector might also not find all small faces. The processing time should be speeded up approximately by a factor of the product of the downscale variables.
+
+The following environment variables control skipping frames and reducing resolution:
+ - `DOWNSCALE_FPS`: specifies to process only every *n*<sup>th</sup> frame.
+ - `DOWNSCALE_RES`: specifies the downscale factor of the resolution of the input video.
+
+For example, calling `face_obfuscator` with this command:
+```bash
+$ DOWNSCALE_FPS=4 DOWNSCALE_RES=2 docker-compose up --build
+```
+will make the obfuscator to process only every 4th frame, and change the width and height of the video to half size. Approximately 8x faster processing time can be expected.

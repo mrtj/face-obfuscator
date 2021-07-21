@@ -13,3 +13,6 @@ services:
       - ./input:/input
       - ./output:/output
     runtime: nvidia
+    environment: 
+      DOWNSCALE_FPS: ${DOWNSCALE_FPS}
+      DOWNSCALE_RES: ${DOWNSCALE_RES}
