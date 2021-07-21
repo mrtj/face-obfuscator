@@ -11,3 +11,6 @@ services:
     volumes:
       - ./input:/input
       - ./output:/output
+    environment: 
+      DOWNSCALE_FPS: ${DOWNSCALE_FPS}
+      DOWNSCALE_RES: ${DOWNSCALE_RES}
