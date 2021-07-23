@@ -11,6 +11,7 @@ print(cv2.getBuildInformation())
 INPUT_FOLDER = '/input'
 OUTPUT_FOLDER = '/output'
 
+os.environ['OPENCV_FFMPEG_CAPTURE_OPTIONS'] = 'an'
 
 class FPSMeter:
 
@@ -103,7 +104,7 @@ def process_video(input_filename, output_filename, downscale_fps, downscale_res,
             frame, face_locations = process_frame(frame)
             out.write(frame)
             fps.tick(log_format=
-                f'frame {frame_idx+1}/{frame_count} ({(frame_idx+1)/frame_count:.02%}), '
+                f'frame {frame_idx}/{frame_count} ({(frame_idx)/frame_count:.02%}), '
                 f'processing time: {{ellapsed:.04f}}s, processing fps: {{fps:.02f}}, '
                 f'face count: {len(face_locations)}')
             procesed_cnt += 1
