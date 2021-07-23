@@ -79,7 +79,8 @@ RUN cd /opt/face_recognition && \
     pip3 install -r requirements.txt && \
     python3 setup.py install
 
-COPY . /opt/face_obfuscator
+RUN mkdir -p /opt/face_obfuscator
+COPY face_obfuscator.py /opt/face_obfuscator
 
 CMD cd /opt/face_obfuscator && \
     python3 face_obfuscator.py
